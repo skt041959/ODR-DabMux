@@ -35,6 +35,10 @@ Install odr-dabmux
     [ as root ]
     % make install                          # Install ODR-DabMux
 
+If you want to compile under **cygwin**, please user
+
+`CXXFLAGS=-D_GNU_SOURCE CFLAGS=-D_GNU_SOURCE ,/configure --disable-input-fifo --disable-input-udp --disable-output-fifo --disable-output-udp --disable-output-tcp --disable-output-edi`
+
 Nearly as simple install procedure using repository:
 ====================================================
 
