@@ -26,6 +26,10 @@
 #ifndef __FIG1_H_
 #define __FIG1_H_
 
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include <cstdint>
 
 #include "fig/FIG.h"

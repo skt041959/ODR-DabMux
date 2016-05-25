@@ -3,8 +3,8 @@
    Queen in Right of Canada (Communications Research Center Canada)
 
    Copyright (C) 2015 Matthias P. Braendli
-    http://www.opendigitalradio.org
-   */
+http://www.opendigitalradio.org
+*/
 /*
    This file is part of ODR-DabMux.
 
@@ -47,16 +47,16 @@
 int UdpSocket::init()
 {
 #ifdef _WIN32
-  WSADATA wsaData;
-  WORD wVersionRequested = wVersionRequested = MAKEWORD( 2, 2 );
-  
-  int res = WSAStartup( wVersionRequested, &wsaData );
-  if (res) {
-    setInetError("Can't initialize winsock");
-    return -1;
-  }
+    WSADATA wsaData;
+    WORD wVersionRequested = wVersionRequested = MAKEWORD( 2, 2 );
+
+    int res = WSAStartup( wVersionRequested, &wsaData );
+    if (res) {
+        setInetError("Can't initialize winsock");
+        return -1;
+    }
 #endif
-  return 0;
+    return 0;
 }
 
 
@@ -64,13 +64,13 @@ int UdpSocket::init()
 int UdpSocket::clean()
 {
 #ifdef _WIN32
-  int res = WSACleanup();
-  if (res) {
-    setInetError("Can't initialize winsock");
-    return -1;
-  }
+    int res = WSACleanup();
+    if (res) {
+        setInetError("Can't initialize winsock");
+        return -1;
+    }
 #endif
-  return 0;
+    return 0;
 }
 
 
@@ -79,9 +79,9 @@ int UdpSocket::clean()
  *  socket.
  */
 UdpSocket::UdpSocket() :
-  listenSocket(INVALID_SOCKET)
+    listenSocket(INVALID_SOCKET)
 {
-  TRACE_CLASS("UdpSocket", "UdpSocket()");
+    TRACE_CLASS("UdpSocket", "UdpSocket()");
 }
 
 
@@ -93,10 +93,10 @@ UdpSocket::UdpSocket() :
  *              the computer have many NICs.
  */
 UdpSocket::UdpSocket(int port, char *name) :
-  listenSocket(INVALID_SOCKET)
+    listenSocket(INVALID_SOCKET)
 {
-  TRACE_CLASS("UdpSocket", "UdpSocket(int, char*)");
-  create(port, name);
+    TRACE_CLASS("UdpSocket", "UdpSocket(int, char*)");
+    create(port, name);
 }
 
 
@@ -110,23 +110,23 @@ UdpSocket::UdpSocket(int port, char *name) :
 int UdpSocket::setBlocking(bool block)
 {
 #ifdef _WIN32
-	unsigned long res = block ? 0 : 1;
-	if (ioctlsocket(listenSocket, FIONBIO, &res) != 0) {
+    unsigned long res = block ? 0 : 1;
+    if (ioctlsocket(listenSocket, FIONBIO, &res) != 0) {
         setInetError("Can't change blocking state of socket");
         return -1;
-	}
+    }
     return 0;
 #else
-  int res;
-  if (block)
-    res = fcntl(listenSocket, F_SETFL, 0);
-  else
-    res = fcntl(listenSocket, F_SETFL, O_NONBLOCK);
-  if (res == SOCKET_ERROR) {
-    setInetError("Can't change blocking state of socket");
-    return -1;
-  }
-  return 0;
+    int res;
+    if (block)
+        res = fcntl(listenSocket, F_SETFL, 0);
+    else
+        res = fcntl(listenSocket, F_SETFL, O_NONBLOCK);
+    if (res == SOCKET_ERROR) {
+        setInetError("Can't change blocking state of socket");
+        return -1;
+    }
+    return 0;
 #endif
 }
 
@@ -143,37 +143,37 @@ int UdpSocket::setBlocking(bool block)
  */
 int UdpSocket::create(int port, char *name)
 {
-  TRACE_CLASS("UdpSocket", "create(int, char*)");
-  if (listenSocket != INVALID_SOCKET)
-    closesocket(listenSocket);
-  address.setAddress(name);
-  address.setPort(port);
-  if ((listenSocket = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
-    setInetError("Can't create socket");
-    return -1;
-  }
-  reuseopt_t reuse = 1;
-  if (setsockopt(listenSocket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse))
-      == SOCKET_ERROR) {
-    setInetError("Can't reuse address");
-    return -1;
-  }
+    TRACE_CLASS("UdpSocket", "create(int, char*)");
+    if (listenSocket != INVALID_SOCKET)
+        closesocket(listenSocket);
+    address.setAddress(name);
+    address.setPort(port);
+    if ((listenSocket = socket(PF_INET, SOCK_DGRAM, 0)) == INVALID_SOCKET) {
+        setInetError("Can't create socket");
+        return -1;
+    }
+    reuseopt_t reuse = 1;
+    if (setsockopt(listenSocket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse))
+            == SOCKET_ERROR) {
+        setInetError("Can't reuse address");
+        return -1;
+    }
 
-  if (bind(listenSocket, address.getAddress(), sizeof(sockaddr_in)) == SOCKET_ERROR) {
-    setInetError("Can't bind socket");
-    closesocket(listenSocket);
-    listenSocket = INVALID_SOCKET;
-    return -1;
-  }
-  return 0;
+    if (bind(listenSocket, address.getAddress(), sizeof(sockaddr_in)) == SOCKET_ERROR) {
+        setInetError("Can't bind socket");
+        closesocket(listenSocket);
+        listenSocket = INVALID_SOCKET;
+        return -1;
+    }
+    return 0;
 }
 
 
 /// Destructor
 UdpSocket::~UdpSocket() {
-  TRACE_CLASS("UdpSocket", "~UdpSocket()");
-  if (listenSocket != INVALID_SOCKET)
-    closesocket(listenSocket);
+    TRACE_CLASS("UdpSocket", "~UdpSocket()");
+    if (listenSocket != INVALID_SOCKET)
+        closesocket(listenSocket);
 }
 
 
@@ -185,25 +185,25 @@ UdpSocket::~UdpSocket() {
  */
 int UdpSocket::receive(UdpPacket &packet)
 {
-  TRACE_CLASS("UdpSocket", "receive(UdpPacket)");
-  socklen_t addrSize;
-  addrSize = sizeof(*packet.getAddress().getAddress());
-  int ret = recvfrom(listenSocket, packet.getData(), packet.getSize() - packet.getOffset(), 0,
-		     packet.getAddress().getAddress(), &addrSize);
-  if (ret == SOCKET_ERROR) {
-    packet.setLength(0);
+    TRACE_CLASS("UdpSocket", "receive(UdpPacket)");
+    socklen_t addrSize;
+    addrSize = sizeof(*packet.getAddress().getAddress());
+    int ret = recvfrom(listenSocket, packet.getData(), packet.getSize() - packet.getOffset(), 0,
+            packet.getAddress().getAddress(), &addrSize);
+    if (ret == SOCKET_ERROR) {
+        packet.setLength(0);
 #ifndef _WIN32
-  if (errno == EAGAIN)
-    return 0;
+        if (errno == EAGAIN)
+            return 0;
 #endif
-    setInetError("Can't receive UDP packet");
-    return -1;
-  }
-  packet.setLength(ret);
-  if (ret == (long)packet.getSize()) {
-    packet.setSize(packet.getSize() << 1);
-  }
-  return 0;
+        setInetError("Can't receive UDP packet");
+        return -1;
+    }
+    packet.setLength(ret);
+    if (ret == (long)packet.getSize()) {
+        packet.setSize(packet.getSize() << 1);
+    }
+    return 0;
 }
 
 /**
@@ -215,19 +215,19 @@ int UdpSocket::receive(UdpPacket &packet)
 int UdpSocket::send(UdpPacket &packet)
 {
 #ifdef DUMP
-  TRACE_CLASS("UdpSocket", "send(UdpPacket)");
+    TRACE_CLASS("UdpSocket", "send(UdpPacket)");
 #endif
-  int ret = sendto(listenSocket, packet.getData(), packet.getLength(), 0,
-		   packet.getAddress().getAddress(), sizeof(*packet.getAddress().getAddress()));
-  if (ret == SOCKET_ERROR
+    int ret = sendto(listenSocket, packet.getData(), packet.getLength(), 0,
+            packet.getAddress().getAddress(), sizeof(*packet.getAddress().getAddress()));
+    if (ret == SOCKET_ERROR
 #ifndef _WIN32
-      && errno != ECONNREFUSED
+            && errno != ECONNREFUSED
 #endif
-      ) {
-    setInetError("Can't send UDP packet");
-    return -1;
-  }
-  return 0;
+       ) {
+        setInetError("Can't send UDP packet");
+        return -1;
+    }
+    return 0;
 }
 
 
@@ -239,60 +239,47 @@ int UdpSocket::send(UdpPacket &packet)
 int UdpSocket::send(std::vector<uint8_t> data, InetAddress destination)
 {
 #ifdef DUMP
-  TRACE_CLASS("UdpSocket", "send(vector<uint8_t>)");
+    TRACE_CLASS("UdpSocket", "send(vector<uint8_t>)");
 #endif
-  int ret = sendto(listenSocket, &data[0], data.size(), 0,
-		   destination.getAddress(), sizeof(*destination.getAddress()));
-  if (ret == SOCKET_ERROR
+    int ret = sendto(listenSocket, &data[0], data.size(), 0,
+            destination.getAddress(), sizeof(*destination.getAddress()));
+    if (ret == SOCKET_ERROR
 #ifndef _WIN32
-      && errno != ECONNREFUSED
+            && errno != ECONNREFUSED
 #endif
-      ) {
-    setInetError("Can't send UDP packet");
-    return -1;
-  }
-  return 0;
+       ) {
+        setInetError("Can't send UDP packet");
+        return -1;
+    }
+    return 0;
 }
 
 
 /**
  *  Must be called to receive data on a multicast address.
  *  @param groupname The multica
-st address to join.
+ st address to join.
  *  @return 0 if ok, -1 if error
  */
 int UdpSocket::joinGroup(char* groupname)
 {
-  TRACE_CLASS("UdpSocket", "joinGroup(char*)");
-#ifdef _WIN32
-  ip_mreq group;
-#else
-  ip_mreqn group;
-#endif
-  if ((group.imr_multiaddr.s_addr = inet_addr(groupname)) == INADDR_NONE) {
-    setInetError(groupname);
-    return -1;
-  }
-  if (!IN_MULTICAST(ntohl(group.imr_multiaddr.s_addr))) {
-    setInetError("Not a multicast address");
-    return -1;
-  }
-#ifdef _WIN32
-  group.imr_interface.s_addr = 0;
-  if (setsockopt(listenSocket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&group, sizeof(group))
-      == SOCKET_ERROR) {
-    setInetError("Can't join multicast group");
-    return -1;
-  }
-#else
-  group.imr_address.s_addr = htons(INADDR_ANY);;
-  group.imr_ifindex = 0;
-  if (setsockopt(listenSocket, IPPROTO_IP, IP_ADD_MEMBERSHIP, &group, sizeof(group))
-      == SOCKET_ERROR) {
-    setInetError("Can't join multicast group");
-  }
-#endif
-  return 0;
+    TRACE_CLASS("UdpSocket", "joinGroup(char*)");
+    ip_mreq group;
+    if ((group.imr_multiaddr.s_addr = inet_addr(groupname)) == INADDR_NONE) {
+        setInetError(groupname);
+        return -1;
+    }
+    if (!IN_MULTICAST(ntohl(group.imr_multiaddr.s_addr))) {
+        setInetError("Not a multicast address");
+        return -1;
+    }
+    group.imr_interface.s_addr = 0;
+    if (setsockopt(listenSocket, IPPROTO_IP, IP_ADD_MEMBERSHIP, (char*)&group, sizeof(group))
+            == SOCKET_ERROR) {
+        setInetError("Can't join multicast group");
+        return -1;
+    }
+    return 0;
 }
 
 int UdpSocket::setMulticastTTL(int ttl)
@@ -329,27 +316,27 @@ int UdpSocket::setMulticastSource(const char* source_addr)
  *  @param initSize The initial size of the data buffer
  */
 UdpPacket::UdpPacket(unsigned int initSize) :
-  dataBuf(new char[initSize]),
-  length(0),
-  size(initSize),
-  offset(0)
+    dataBuf(new char[initSize]),
+    length(0),
+    size(initSize),
+    offset(0)
 {
-  TRACE_CLASS("UdpPacket", "UdpPacket(unsigned int)");
-  if (dataBuf == NULL)
-    size = 0;
+    TRACE_CLASS("UdpPacket", "UdpPacket(unsigned int)");
+    if (dataBuf == NULL)
+        size = 0;
 }
 
 
 /// Destructor
 UdpPacket::~UdpPacket()
 {
-  TRACE_CLASS("UdpPacket", "~UdpPacket()");
-  if (dataBuf != NULL) {
-    delete []dataBuf;
-    dataBuf = NULL;
-  }
+    TRACE_CLASS("UdpPacket", "~UdpPacket()");
+    if (dataBuf != NULL) {
+        delete []dataBuf;
+        dataBuf = NULL;
+    }
 }
-  
+
 
 /**
  *  Changes size of the data buffer size. \a Length + \a offset data will be copied
@@ -359,16 +346,16 @@ UdpPacket::~UdpPacket()
  */
 void UdpPacket::setSize(unsigned newSize)
 {
-  TRACE_CLASS("UdpPacket", "setSize(unsigned)");
-  char *tmp = new char[newSize];
-  if (length > newSize)
-    length = newSize;
-  if (tmp) {
-    memcpy(tmp, dataBuf, length);
-    delete []dataBuf;
-    dataBuf = tmp;
-    size = newSize;
-  }
+    TRACE_CLASS("UdpPacket", "setSize(unsigned)");
+    char *tmp = new char[newSize];
+    if (length > newSize)
+        length = newSize;
+    if (tmp) {
+        memcpy(tmp, dataBuf, length);
+        delete []dataBuf;
+        dataBuf = tmp;
+        size = newSize;
+    }
 }
 
 
@@ -379,7 +366,7 @@ void UdpPacket::setSize(unsigned newSize)
  */
 char *UdpPacket::getData()
 {
-  return dataBuf + offset;
+    return dataBuf + offset;
 }
 
 
@@ -390,11 +377,11 @@ char *UdpPacket::getData()
  */
 void UdpPacket::addData(const void *data, unsigned size)
 {
-  if (length + size > this->size) {
-    setSize(this->size << 1);
-  }
-  memcpy(dataBuf + length, data, size);
-  length += size;
+    if (length + size > this->size) {
+        setSize(this->size << 1);
+    }
+    memcpy(dataBuf + length, data, size);
+    length += size;
 }
 
 
@@ -404,7 +391,7 @@ void UdpPacket::addData(const void *data, unsigned size)
  */
 unsigned long UdpPacket::getLength()
 {
-  return length - offset;
+    return length - offset;
 }
 
 
@@ -414,7 +401,7 @@ unsigned long UdpPacket::getLength()
  */
 unsigned long UdpPacket::getSize()
 {
-  return size;
+    return size;
 }
 
 
@@ -424,7 +411,7 @@ unsigned long UdpPacket::getSize()
  */
 unsigned long UdpPacket::getOffset()
 {
-  return offset;
+    return offset;
 }
 
 
@@ -434,7 +421,7 @@ unsigned long UdpPacket::getOffset()
  */
 void UdpPacket::setLength(unsigned long len)
 {
-  length = len + offset;
+    length = len + offset;
 }
 
 
@@ -444,9 +431,9 @@ void UdpPacket::setLength(unsigned long len)
  */
 void UdpPacket::setOffset(unsigned long val)
 {
-  offset = val;
-  if (offset > length)
-    length = offset;
+    offset = val;
+    if (offset > length)
+        length = offset;
 }
 
 
@@ -456,55 +443,55 @@ void UdpPacket::setOffset(unsigned long val)
  */
 InetAddress &UdpPacket::getAddress()
 {
-  return address;
+    return address;
 }
 
 /*
-WSAEINTR
-WSAEBADF
-WSAEACCES
-WSAEFAULT
-WSAEINVAL
-WSAEMFILE
-WSAEWOULDBLOCK
-WSAEINPROGRESS
-WSAEALREADY
-WSAENOTSOCK
-WSAEDESTADDRREQ
-WSAEMSGSIZE
-WSAEPROTOTYPE
-WSAENOPROTOOPT
-WSAEPROTONOSUPPORT
-WSAESOCKTNOSUPPORT
-WSAEOPNOTSUPP
-WSAEPFNOSUPPORT
-WSAEAFNOSUPPORT
-WSAEADDRINUSE
-WSAEADDRNOTAVAIL
-WSAENETDOWN
-WSAENETUNREACH
-WSAENETRESET
-WSAECONNABORTED
-WSAECONNRESET
-WSAENOBUFS
-WSAEISCONN
-WSAENOTCONN
-WSAESHUTDOWN
-WSAETOOMANYREFS
-WSAETIMEDOUT
-WSAECONNREFUSED
-WSAELOOP
-WSAENAMETOOLONG
-WSAEHOSTDOWN
-WSAEHOSTUNREACH
-WSAENOTEMPTY
-WSAEPROCLIM
-WSAEUSERS
-WSAEDQUOT
-WSAESTALE
-WSAEREMOTE
-WSAEDISCON
-WSASYSNOTREADY
-WSAVERNOTSUPPORTED
-WSANOTINITIALISED
-*/
+   WSAEINTR
+   WSAEBADF
+   WSAEACCES
+   WSAEFAULT
+   WSAEINVAL
+   WSAEMFILE
+   WSAEWOULDBLOCK
+   WSAEINPROGRESS
+   WSAEALREADY
+   WSAENOTSOCK
+   WSAEDESTADDRREQ
+   WSAEMSGSIZE
+   WSAEPROTOTYPE
+   WSAENOPROTOOPT
+   WSAEPROTONOSUPPORT
+   WSAESOCKTNOSUPPORT
+   WSAEOPNOTSUPP
+   WSAEPFNOSUPPORT
+   WSAEAFNOSUPPORT
+   WSAEADDRINUSE
+   WSAEADDRNOTAVAIL
+   WSAENETDOWN
+   WSAENETUNREACH
+   WSAENETRESET
+   WSAECONNABORTED
+   WSAECONNRESET
+   WSAENOBUFS
+   WSAEISCONN
+   WSAENOTCONN
+   WSAESHUTDOWN
+   WSAETOOMANYREFS
+   WSAETIMEDOUT
+   WSAECONNREFUSED
+   WSAELOOP
+   WSAENAMETOOLONG
+   WSAEHOSTDOWN
+   WSAEHOSTUNREACH
+   WSAENOTEMPTY
+   WSAEPROCLIM
+   WSAEUSERS
+   WSAEDQUOT
+   WSAESTALE
+   WSAEREMOTE
+   WSAEDISCON
+   WSASYSNOTREADY
+   WSAVERNOTSUPPORTED
+   WSANOTINITIALISED
+   */

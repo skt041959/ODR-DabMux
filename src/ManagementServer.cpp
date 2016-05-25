@@ -27,6 +27,7 @@
    You should have received a copy of the GNU General Public License
    along with ODR-DabMux.  If not, see <http://www.gnu.org/licenses/>.
    */
+#include "ManagementServer.h"
 
 #include <errno.h>
 #include <string.h>
@@ -37,7 +38,6 @@
 #include <ctime>
 #include <boost/thread.hpp>
 #include <boost/version.hpp>
-#include "ManagementServer.h"
 #include "Log.h"
 
 ManagementServer& get_mgmt_server()

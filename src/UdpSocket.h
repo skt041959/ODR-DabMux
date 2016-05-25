@@ -31,7 +31,8 @@
 
 #include "InetAddress.h"
 #ifdef _WIN32
-# include <winsock.h>
+# include <w32api/windows.h>
+# include <w32api/winsock.h>
 # define socklen_t        int
 # define reuseopt_t       char
 #else
@@ -46,7 +47,11 @@
 # define SOCKET_ERROR     -1
 # define reuseopt_t       int
 #endif
-//#define INVALID_PORT      -1
+#define INVALID_PORT      -1
+//# include <w32api/windows.h>
+//# include <w32api/winsock.h>
+//# define socklen_t        int
+//# define reuseopt_t       char
 
 #include <stdlib.h>
 #include <iostream>
@@ -101,12 +106,12 @@ class UdpSocket {
 };
 
 /**
- *  This class represents a UDP packet. 
+ *  This class represents a UDP packet.
  *
  *  UDP packets are used to implement a connectionless packet delivery service.
  *  Each message is routed from one machine to another based solely on
  *  information contained within that packet. Multiple packets sent from one
- *  machine to another might be routed differently, and might arrive in any order. 
+ *  machine to another might be routed differently, and might arrive in any order.
  *  @author Pascal Charest pascal.charest@crc.ca
  */
 class UdpPacket {
@@ -127,7 +132,7 @@ class UdpPacket {
   void setOffset(unsigned long val);
   void setSize(unsigned newSize);
   InetAddress &getAddress();
-  
+
  private:
   char *dataBuf;
   unsigned long length, size, offset;

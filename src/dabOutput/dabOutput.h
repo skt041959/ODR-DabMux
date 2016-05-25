@@ -29,6 +29,10 @@
 #ifndef __DAB_OUTPUT_H
 #define __DAB_OUTPUT_H
 
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "UdpSocket.h"
 #include "TcpServer.h"
 #include "Log.h"

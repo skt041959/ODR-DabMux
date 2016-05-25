@@ -22,6 +22,7 @@
    You should have received a copy of the GNU General Public License
    along with ODR-DabMux.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "RemoteControl.h"
 #include <list>
 #include <string>
 #include <iostream>
@@ -31,7 +32,6 @@
 #include <boost/thread.hpp>
 #include "Log.h"
 
-#include "RemoteControl.h"
 
 using boost::asio::ip::tcp;
 using namespace std;

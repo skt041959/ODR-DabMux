@@ -31,6 +31,10 @@
 #ifndef __CONFIG_PARSER_H_
 #define __CONFIG_PARSER_H_
 
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include <vector>
 #include <string>
 #include "MuxElements.h"

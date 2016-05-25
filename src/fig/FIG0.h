@@ -26,11 +26,11 @@
 #ifndef __FIG0_H_
 #define __FIG0_H_
 
+#include "fig/FIG.h"
+
 #include <cstdint>
 #include <map>
 #include <set>
-
-#include "fig/FIG.h"
 
 namespace FIC {
 

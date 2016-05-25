@@ -28,9 +28,9 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
+#include "MuxElements.h"
 #include <cstdio>
 #include <memory>
-#include "MuxElements.h"
 
 time_t getDabTime();
 

@@ -23,9 +23,9 @@
    along with ODR-DabMux.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "DabMultiplexer.h"
 #include <set>
 #include <memory>
-#include "DabMultiplexer.h"
 #include "ConfigParser.h"
 #include "fig/FIG.h"
 
@@ -462,7 +462,7 @@ void DabMultiplexer::mux_frame(std::vector<std::shared_ptr<DabOutput> >& outputs
     //****** Field FSYNC *****//
     // See ETS 300 799, 6.2.1.2
     sync ^= 0xffffff;
-    etiSync->FSYNC = sync;
+    etiSync->FSYNC_eti = sync;
 
     /**********************************************************************
      ***********   Section LIDATA of ETI(NI, G703)   **********************
@@ -1790,7 +1790,7 @@ void DabMultiplexer::mux_frame(std::vector<std::shared_ptr<DabOutput> >& outputs
 
 
 
-    /********************************************************************** 
+    /**********************************************************************
      ***********   Section FRPD   *****************************************
      **********************************************************************/
 
@@ -1810,7 +1810,7 @@ void DabMultiplexer::mux_frame(std::vector<std::shared_ptr<DabOutput> >& outputs
 #endif // DUMP_BRIDGE
 
 #if HAVE_OUTPUT_EDI
-    /********************************************************************** 
+    /**********************************************************************
      ***********   Finalise and send EDI   ********************************
      **********************************************************************/
 
@@ -1871,7 +1871,7 @@ void DabMultiplexer::mux_frame(std::vector<std::shared_ptr<DabOutput> >& outputs
 #endif // HAVE_OUTPUT_EDI
 
 #if _DEBUG
-    /********************************************************************** 
+    /**********************************************************************
      ***********   Output a small message *********************************
      **********************************************************************/
     if (currentFrame % 100 == 0) {

@@ -29,6 +29,10 @@
 #ifndef __FIG_CAROUSEL_H_
 #define __FIG_CAROUSEL_H_
 
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+
 #include "fig/FIG.h"
 #include "fig/FIG0.h"
 #include "fig/FIG1.h"

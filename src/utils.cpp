@@ -22,12 +22,12 @@
    You should have received a copy of the GNU General Public License
    along with ODR-DabMux.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "utils.h"
 #include <cstring>
 #include <iostream>
 #include <memory>
 #include <boost/algorithm/string/join.hpp>
 #include "DabMux.h"
-#include "utils.h"
 
 using namespace std;
 

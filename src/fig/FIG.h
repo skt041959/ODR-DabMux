@@ -27,8 +27,8 @@
 #ifndef __FIG_H_
 #define __FIG_H_
 
-#include <memory>
 #include "MuxElements.h"
+#include <memory>
 
 namespace FIC {
 

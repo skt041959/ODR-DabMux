@@ -26,9 +26,9 @@
    along with ODR-DabMux.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "fig/FIGCarousel.h"
 #include "crc.h"
 #include "Log.h"
-#include "fig/FIGCarousel.h"
 #include <boost/format.hpp>
 #include <iostream>
 #include <memory>

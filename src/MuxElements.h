@@ -28,6 +28,10 @@
 #ifndef _MUX_ELEMENTS
 #define _MUX_ELEMENTS
 
+#ifdef HAVE_CONFIG_H
+#   include "config.h"
+#endif
+#include "RemoteControl.h"
 #include <vector>
 #include <memory>
 #include <string>
@@ -36,7 +40,6 @@
 #include <stdint.h>
 #include "dabOutput/dabOutput.h"
 #include "dabInput.h"
-#include "RemoteControl.h"
 #include "Eti.h"
 
 enum class subchannel_type_t {
